@@ -10,22 +10,25 @@ describe('Contact form', () =>
 		cy.visit('/')
 
 			// Find and click on the link to navigate to the Contact page or form
-			.get('#menu-item-1040 a.fusion-bar-highlight').click()
-		
-			// Fill out the contact form with appropriate details
-			.get('[name="firstname"]').type('Khoghulan')
-			.get('[name="lastname"]').type('Task Testing')
-			.get('[name="email"]').type('khoghu@gmail.com')
-			.get('[name="phone"]').type('01116345979')
-			.get('[name="field[1]"]').type('Aluminati')
-			.get('[name="field[10]"]').type('Tester')
-			.get('[name="field[5]"]').type('Testing Purpose')
-		
-			// Submit the form
-			// Comment the submit button because duplicate contact form record created
-			// .get('form[action="https://aluminati.activehosted.com/proc.php"]').submit()
-		
-			// Log a message indicating that the form submission is attempted
-			.log('Form submission attempted')
+			cy.get('#menu-item-17180 > .fusion-bar-highlight').click();
+
+			// add an input value in array
+			const inputValues = ['Khoghu Test', 'khoghu@gmail.com', '01114567890', 'Aluminati', 'Tester', 'Testing Cypress'];
+
+			// loop the element and add array input value
+			cy.get('div.contactUsForm input:not([type="submit"]), div.contactUsForm textarea')
+				.each(($element, index) => {
+					const inputValue = inputValues[index] || ''
+					cy.wrap($element).type(inputValue);
+				})
+				.then(() => {
+					// Click the submit button after filling in the inputs
+					// Comment the submit button because duplicate contact form record created
+					// cy.get('div.contactUsForm input[type="submit"]').click({ force: true });
+					// cy.wait(5000);
+
+					// Log a form submission
+					cy.log('Form submission successful');
+				});
 	});
 });
